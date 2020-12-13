@@ -86,6 +86,12 @@ The same logic applies for left-multiplication and cross-products.
 This allows us to easily speed up high-level operations involving matrix multiplication by just switching to a `ScaledMatrix`,
 e.g., in approximate PCA algorithms from the `r Biocpkg("BiocSingular")` package.
 
+```{r}
+library(BiocSingular)
+set.seed(1000)
+system.time(pcs <- runSVD(smat, k=10, BSPARAM=IrlbaParam()))
+```
+
 # Other utilities
 
 Row and column sums are special cases of matrix multiplication and can be computed quickly:
