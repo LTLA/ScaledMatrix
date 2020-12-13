@@ -1,0 +1,30 @@
+Package: ScaledMatrix
+Version: 0.99.0
+Date: 2020-12-12
+Title: Creating a DelayedMatrix of Scaled and Centered Values 
+Authors@R: person("Aaron", "Lun", role=c("aut", "cre", "cph"),
+        email="infinite.monkeys.with.keyboards@gmail.com")
+Imports:
+    methods,
+    Matrix,
+    S4Vectors,
+    DelayedArray
+Suggests: 
+    testthat, 
+    BiocStyle, 
+    knitr, 
+    rmarkdown,
+    BiocSingular 
+biocViews: 
+    Software, 
+    DataRepresentation
+Description: 
+    Provides delayed computation of a matrix of scaled and centered values.
+    The result is equivalent to using the scale() function but avoids explicit 
+    realization of a dense matrix during block processing. This permits greater
+    efficiency in common operations, most notably matrix multiplication.
+License: GPL-3
+VignetteBuilder: knitr
+RoxygenNote: 7.1.1
+BugReports: https://github.com/LTLA/ScaledMatrix/issues
+URL: https://github.com/LTLA/ScaledMatrix
