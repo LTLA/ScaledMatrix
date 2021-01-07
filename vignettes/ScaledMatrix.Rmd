@@ -124,6 +124,28 @@ However, if this is not the case, the `ScaledMatrix` offers little benefit for i
 
 It is also worth noting that this speed-up is not entirely free. 
 The expression above involves subtracting two matrix with potentially large values, which runs the risk of catastrophic cancellation.
+The example below demonstrates how `ScaledMatrix` is more susceptible to loss of precision than a normal `DelayedArray`:
+
+```{r}
+set.seed(1000)
+mat <- matrix(rnorm(1000000), ncol=100000) 
+big.mat <- mat + 1e12
+
+# The 'correct' value, unaffected by numerical precision.
+ref <- rowMeans(scale(mat))
+head(ref)
+
+# The value from scale'ing a DelayedArray.
+library(DelayedArray)
+smat2 <- scale(DelayedArray(big.mat))
+head(rowMeans(smat2))
+
+# The value from a ScaledMatrix.
+library(ScaledMatrix)
+smat3 <- ScaledMatrix(big.mat, center=TRUE, scale=TRUE)
+head(rowMeans(smat3))
+```
+
 In most practical applications, though, this does not seem to be a major concern, 
 especially as most values (e.g., log-normalized expression matrices) lie close to zero anyway.
 
