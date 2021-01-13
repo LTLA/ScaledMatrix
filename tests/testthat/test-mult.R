@@ -326,7 +326,7 @@ test_that("deep testing of tcrossproduct internals: special mult", {
     s <- runif(NR)
 
     ref <- t(matrix(c, NR, NC, byrow=TRUE)) %*% (basic/s^2)
-    out <- BiocSingular:::.internal_mult_special(c, s, basic)
+    out <- ScaledMatrix:::.internal_mult_special(c, s, basic)
     expect_equal(ref, out)
 
     available <- list(list(def=basic, ref=basic))
@@ -343,7 +343,7 @@ test_that("deep testing of tcrossproduct internals: special mult", {
         for (i in seq_along(available)) {
             test <- available[[i]]
             ref <- t(matrix(c, NR, NC, byrow=TRUE)) %*% (test$ref/s^2)
-            out <- BiocSingular:::.internal_mult_special(c, s, test$def)
+            out <- ScaledMatrix:::.internal_mult_special(c, s, test$def)
             expect_equal(ref, out)
         }
     }
@@ -357,7 +357,7 @@ test_that("deep testing of tcrossproduct internals: scaled tcrossprod", {
     basic <- matrix(rnorm(NC*NR), ncol=NC)
 
     ref <- crossprod(t(basic)/s)
-    out <- BiocSingular:::.internal_tcrossprod(basic, s)
+    out <- ScaledMatrix:::.internal_tcrossprod(basic, s)
     expect_equal(ref, out)
 
     available <- list(list(def=basic, ref=basic))
@@ -374,7 +374,7 @@ test_that("deep testing of tcrossproduct internals: scaled tcrossprod", {
         for (i in seq_along(available)) {
             test <- available[[i]]
             ref <- crossprod(t(test$ref)/s)
-            out <- BiocSingular:::.internal_tcrossprod(test$def, s)
+            out <- ScaledMatrix:::.internal_tcrossprod(test$def, s)
             expect_equal(ref, out)
         }
     }
