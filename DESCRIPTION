@@ -1,5 +1,5 @@
 Package: ScaledMatrix
-Version: 1.4.0
+Version: 1.5.0
 Date: 2021-01-13
 Title: Creating a DelayedMatrix of Scaled and Centered Values 
 Authors@R: person("Aaron", "Lun", role=c("aut", "cre", "cph"),
