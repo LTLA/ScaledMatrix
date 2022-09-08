@@ -74,3 +74,10 @@ expect_equal_product <- function(x, y) {
     if (all(lengths(dimnames(y))==0L)) dimnames(y) <- NULL 
     expect_equal(X, y)
 }
+
+purgenames <- function(mat) {
+    if (identical(dimnames(mat), list(NULL, NULL))) {
+        dimnames(mat) <- NULL
+    }
+    mat
+}

@@ -12,7 +12,7 @@ test_that("ScaledMatrix utility functions work as expected", {
         expect_identical(extract_array(test$def, list(1:10, 1:10)), test$ref[1:10, 1:10])
         expect_identical(extract_array(test$def, list(1:10, NULL)), test$ref[1:10,])
         expect_identical(extract_array(test$def, list(NULL, 1:10)), test$ref[,1:10])
-        expect_identical(as.matrix(test$def), test$ref)
+        expect_identical(purgenames(as.matrix(test$def)), purgenames(test$ref))
 
         expect_equal(rowSums(test$def), rowSums(test$ref))
         expect_equal(colSums(test$def), colSums(test$ref))
@@ -22,7 +22,7 @@ test_that("ScaledMatrix utility functions work as expected", {
         tdef <- t(test$def)
         expect_s4_class(tdef, "ScaledMatrix") # still a DefMat!
         expect_identical(t(tdef), test$def)
-        expect_identical(as.matrix(tdef), t(test$ref))
+        expect_identical(purgenames(as.matrix(tdef)), purgenames(t(test$ref)))
 
         # Checking column names getting and setting.
         spawn_names <- sprintf("THING_%i", seq_len(ncol(test$def)))
@@ -50,7 +50,7 @@ set.seed(1000011)
 test_that("ScaledMatrix subsetting works as expected", {
     expect_identical_and_defmat <- function(x, y) {
         expect_s4_class(x, "ScaledMatrix") # class is correctly preserved by direct seed modification.
-        expect_identical(as.matrix(x), y)
+        expect_identical(purgenames(as.matrix(x)), purgenames(y))
     }
 
     possibles <- spawn_scenarios()
@@ -96,6 +96,6 @@ test_that("DelayedMatrix wrapping works", {
         expect_equal_product(test$def*v, test$ref*v)
 
         w <- rnorm(ncol(test$def))
-        expect_equal_product(sweep(test$def, 2, w, "*"), sweep(test$ref, 2, w, "*"))
+        expect_equal_product(DelayedArray::sweep(test$def, 2, w, "*"), sweep(test$ref, 2, w, "*"))
     }
 })
