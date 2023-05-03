@@ -7,7 +7,7 @@ date: "Revised: 12 December 2020"
 output:
   BiocStyle::html_document:
     toc_float: true 
-package: ResidualMatrix
+package: ScaledMatrix
 vignette: >
   %\VignetteIndexEntry{Using the ScaledMatrix}
   %\VignetteEngine{knitr::rmarkdown}
