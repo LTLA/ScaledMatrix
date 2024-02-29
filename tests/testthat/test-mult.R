@@ -10,11 +10,13 @@ setClass("CrippledMatrix", slots=c(x="matrix"))
 
 setMethod("dim", c("CrippledMatrix"), function(x) dim(x@x))
 
-setMethod("colSums", c("CrippledMatrix"), function(x) colSums(x@x))
+setMethod(Matrix::colSums, c("CrippledMatrix"), function(x) colSums(x@x))
 
-setMethod("rowSums", c("CrippledMatrix"), function(x) rowSums(x@x))
+setMethod(Matrix::colMeans, c("CrippledMatrix"), function(x) colMeans(x@x))
 
-setMethod("sweep", c("CrippledMatrix"), function (x, MARGIN, STATS, FUN = "-", check.margin = TRUE, ...) {
+setMethod(Matrix::rowSums, c("CrippledMatrix"), function(x) rowSums(x@x))
+
+setMethod(DelayedArray::sweep, c("CrippledMatrix"), function (x, MARGIN, STATS, FUN = "-", check.margin = TRUE, ...) {
     sweep(x@x, MARGIN, STATS, FUN, check.margin, ...)
 })
 
@@ -33,6 +35,28 @@ setMethod("tcrossprod", c("CrippledMatrix", "missing"), function(x, y) tcrosspro
 setMethod("tcrossprod", c("CrippledMatrix", "ANY"), function(x, y) tcrossprod(x@x, y))
 
 setMethod("tcrossprod", c("ANY", "CrippledMatrix"), function(x, y) tcrossprod(x, y@x))
+
+setMethod("[", c("CrippledMatrix", "ANY", "ANY"), function(x, i, j, ..., drop=FALSE) new("CrippledMatrix", x=x@x[i,j,...,drop=drop]))
+
+setMethod("extract_array", "CrippledMatrix", function(x, index) {
+    # Returning NAs to indicate how crippled we are.
+    NR <- if (is.null(index[[1]])) nrow(x) else length(index[[1]])
+    NC <- if (is.null(index[[2]])) ncol(x) else length(index[[2]])
+    matrix(NA_real_, NR, NC)
+})
+
+setMethod(Matrix::t, c("CrippledMatrix"), function(x) new("CrippledMatrix", x=t(x@x)))
+
+setMethod("Ops", c("CrippledMatrix", "ANY"), function(e1, e2) callGeneric(as.matrix(e1), e2))
+
+## As we're trying to sneak this past DelayedArray validation,
+## new bugs show up whenever DelayedArray tightens its checks.
+## The script below usually gives more informative errors.
+# X <- new("CrippledMatrix", x=matrix(cbind(1, 1)))
+# y <- ScaledMatrixSeed(X, center = runif(ncol(X)))
+# S4Arrays:::extract_empty_array(y)
+
+as.matrix.CrippledMatrix <- function(x) extract_array(x, list(NULL, NULL))
 
 spawn_extra_scenarios <- function(NR=50, NC=20) {
     c(
