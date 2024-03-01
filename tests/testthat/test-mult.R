@@ -56,7 +56,7 @@ setMethod("Ops", c("CrippledMatrix", "ANY"), function(e1, e2) callGeneric(as.mat
 # y <- ScaledMatrixSeed(X, center = runif(ncol(X)))
 # S4Arrays:::extract_empty_array(y)
 
-as.matrix.CrippledMatrix <- function(x) extract_array(x, list(NULL, NULL))
+setMethod(Matrix::as.matrix, "CrippledMatrix", function(x, ...) extract_array(x, list(NULL, NULL)))
 
 spawn_extra_scenarios <- function(NR=50, NC=20) {
     c(

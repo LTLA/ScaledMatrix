@@ -104,7 +104,7 @@ transpose_ScaledMatrixSeed <- function(x) {
     x
 }
 
-#' @importFrom Matrix t
+#' @importFrom Matrix t as.matrix
 #' @importFrom methods is
 realize_ScaledMatrixSeed <- function(x, ...) {
     out <- get_matrix2(x)
